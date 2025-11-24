@@ -11,10 +11,19 @@
 {@render children()}
 
 <style>
+	:global(html) {
+		margin: 0;
+		padding: 0;
+		height: 100%;
+		overflow: hidden;
+	}
+
 	:global(body) {
 		margin: 0;
 		padding: 0;
+		height: 100%;
 		box-sizing: border-box;
+		overflow: hidden;
 	}
 	
 	:global(*) {

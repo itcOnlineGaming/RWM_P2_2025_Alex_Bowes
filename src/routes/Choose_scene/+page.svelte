@@ -15,7 +15,7 @@
 	function handleContinue() {
 		if (selectedScene) {
 			sceneStore.set(selectedScene);
-			goto('/meditation');
+			goto('/Breathing_Methods_Selection');
 		}
 	}
 </script>
