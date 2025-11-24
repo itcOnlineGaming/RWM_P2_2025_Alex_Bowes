@@ -37,7 +37,7 @@
 					aria-label="Select beach"
 				>
 					{#if selectedScene === 'beach'}
-						<span class="checkmark">✓</span>
+						<span class="checkmark"></span>
 					{/if}
 				</button>
 				<span class="label">Beach</span>
@@ -55,7 +55,7 @@
 					aria-label="Select forest"
 				>
 					{#if selectedScene === 'forest'}
-						<span class="checkmark">✓</span>
+						<span class="checkmark"></span>
 					{/if}
 				</button>
 				<span class="label">Forest</span>

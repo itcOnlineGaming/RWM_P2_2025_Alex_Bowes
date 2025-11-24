@@ -8,14 +8,15 @@
   let completed = false;
   let selectedScene: 'beach' | 'forest' | null = null;
   let backgroundImage = '';
+  let fadeTransition = false;
 
   onMount(() => {
     sceneStore.subscribe(value => {
       selectedScene = value;
       if (value === 'beach') {
-        backgroundImage = '/ASSETS/Beach-Scence-with-sun.png';
+        backgroundImage = '/ASSETS/Beach-Scence (1).png';
       } else if (value === 'forest') {
-        backgroundImage = '/ASSETS/Forest-Scence-with-sun.png';
+        backgroundImage = '/ASSETS/Forest-Scence (1).png';
       }
     });
   });
@@ -27,18 +28,38 @@
   function handleComplete() {
     completed = true;
   }
+
+  function skipMeditation() {
+    completed = true;
+  }
+
+  function handleFadeTransition() {
+    fadeTransition = true;
+    // Change to sunset/moonrise version
+    if (selectedScene === 'beach') {
+      backgroundImage = '/ASSETS/Beach-Scence-Sun-Set.png';
+    } else if (selectedScene === 'forest') {
+      backgroundImage = '/ASSETS/Forest-Scence-Sun-Set.png';
+    }
+  }
 </script>
 
-<div class="container" style="background-image: url('{backgroundImage}');">
-  <h1>This is the meditation page</h1>
+<div class="container" style="background-image: url('{backgroundImage}');" class:fade={fadeTransition}>
+  {#if !started}
+    <h1>Ready to Begin Meditation</h1>
+  {/if}
 
   {#if started}
-    <Meditation on:complete={handleComplete} />
+    <Meditation on:complete={handleComplete} on:fadeTransition={handleFadeTransition} />
   {/if}
 
   <div class="button-container">
     {#if !started}
       <button class="action-button" on:click={startMeditation}>Start</button>
+    {/if}
+
+    {#if started && !completed}
+      <button class="action-button skip-button" on:click={skipMeditation}>Skip</button>
     {/if}
 
     {#if completed}
@@ -60,6 +81,23 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    transition: background-image 3s ease-in-out;
+  }
+
+  .container.fade {
+    animation: fadeBackground 3s ease-in-out;
+  }
+
+  @keyframes fadeBackground {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 
   h1 {
@@ -95,6 +133,17 @@
   .action-button:hover {
     background-color: #45a049;
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .skip-button {
+    background-color: #ff9800 !important;
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+  }
+
+  .skip-button:hover {
+    background-color: #f57c00 !important;
   }
 
   /* Continue button on bottom-right */

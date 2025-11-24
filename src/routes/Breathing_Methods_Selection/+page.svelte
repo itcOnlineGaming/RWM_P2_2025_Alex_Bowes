@@ -11,9 +11,9 @@
 		sceneStore.subscribe(value => {
 			selectedScene = value;
 			if (value === 'beach') {
-				backgroundImage = '/ASSETS/Beach-Scence-with-sun.png';
+				backgroundImage = '/ASSETS/Beach-Scence (1).png';
 			} else if (value === 'forest') {
-				backgroundImage = '/ASSETS/Forest-Scence-with-sun.png';
+				backgroundImage = '/ASSETS/Forest-Scence (1).png';
 			}
 		});
 	});
