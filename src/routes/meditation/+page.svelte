@@ -1,9 +1,24 @@
 <script lang="ts">
   import { base } from '$app/paths';
   import Meditation from '$lib/MeditationComponent/Meditation.svelte';
+  import { sceneStore } from '$lib/stores/sceneStore';
+  import { onMount } from 'svelte';
 
   let started = false;
   let completed = false;
+  let selectedScene: 'beach' | 'forest' | null = null;
+  let backgroundImage = '';
+
+  onMount(() => {
+    sceneStore.subscribe(value => {
+      selectedScene = value;
+      if (value === 'beach') {
+        backgroundImage = '/ASSETS/Beach-Scence-with-sun.png';
+      } else if (value === 'forest') {
+        backgroundImage = '/ASSETS/Forest-Scence-with-sun.png';
+      }
+    });
+  });
 
   function startMeditation() {
     started = true;
@@ -14,7 +29,7 @@
   }
 </script>
 
-<div class="container">
+<div class="container" style="background-image: url('{backgroundImage}');">
   <h1>This is the meditation page</h1>
 
   {#if started}
@@ -42,6 +57,9 @@
     padding: 2rem;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     position: relative;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
   }
 
   h1 {

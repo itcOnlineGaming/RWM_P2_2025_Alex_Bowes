@@ -1,5 +1,10 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import WhatsUpSlider from '$lib/whats_up/whats_up.svelte';
+
+	function handleContinue() {
+		goto('/Choose_scene');
+	}
 </script>
 
 <div class="page-container">
@@ -12,7 +17,7 @@
 	</div>
 	
 	<div class="footer">
-		<button class="continue-btn">Continue</button>
+		<button class="continue-btn" on:click={handleContinue}>Continue</button>
 	</div>
 </div>
 
