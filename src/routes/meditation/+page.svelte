@@ -1,41 +1,71 @@
 <script lang="ts">
   import { base } from '$app/paths';
+  import { goto } from '$app/navigation';
   import Meditation from '$lib/MeditationComponent/Meditation.svelte';
   import { sceneStore } from '$lib/stores/sceneStore';
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
 
   let started = false;
   let completed = false;
   let selectedScene: 'beach' | 'forest' | null = null;
   let backgroundImage = '';
   let fadeTransition = false;
+  let audioElement: HTMLAudioElement | null = null;
+  let audioSource = '';
 
   onMount(() => {
     sceneStore.subscribe(value => {
       selectedScene = value;
       if (value === 'beach') {
         backgroundImage = '/ASSETS/Beach-Scence (1).png';
+        audioSource = '/ASSETS/ocean-waves-250310.mp3';
       } else if (value === 'forest') {
         backgroundImage = '/ASSETS/Forest-Scence (1).png';
+        audioSource = '/ASSETS/wind-in-the-trees-24035.mp3';
       }
     });
   });
 
+  onDestroy(() => {
+    if (audioElement) {
+      audioElement.pause();
+      audioElement.currentTime = 0;
+    }
+  });
+
   function startMeditation() {
     started = true;
+    // Start playing audio
+    if (audioElement) {
+      audioElement.play();
+    }
   }
 
   function handleComplete() {
     completed = true;
+    // Stop audio when meditation completes
+    if (audioElement) {
+      audioElement.pause();
+      audioElement.currentTime = 0;
+    }
+    // Navigate to ending page
+    goto('/Ending_of_Meditation');
   }
 
   function skipMeditation() {
     completed = true;
+    // Stop audio when skipping
+    if (audioElement) {
+      audioElement.pause();
+      audioElement.currentTime = 0;
+    }
+    // Navigate to ending page
+    goto('/Ending_of_Meditation');
   }
 
   function handleFadeTransition() {
     fadeTransition = true;
-    // Change to sunset/moonrise version
+    // Change to version without sun
     if (selectedScene === 'beach') {
       backgroundImage = '/ASSETS/Beach-Scence-Sun-Set.png';
     } else if (selectedScene === 'forest') {
@@ -43,6 +73,8 @@
     }
   }
 </script>
+
+<audio bind:this={audioElement} src={audioSource} loop preload="auto" />
 
 <div class="container" style="background-image: url('{backgroundImage}');" class:fade={fadeTransition}>
   {#if !started}
