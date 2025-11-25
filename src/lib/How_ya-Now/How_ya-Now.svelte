@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { initialStressLevel } from '$lib/stores/stressLevelStore';
+	import { finalStressLevel } from '$lib/stores/stressLevelStore';
 
 	let stressLevel = 50; // 0-100, where 0 is "I can't complain" and 100 is "I'm Fricked up"
 	
 	// Save to store whenever it changes
-	$: initialStressLevel.set(stressLevel);
+	$: finalStressLevel.set(stressLevel);
 	
 	// Calculate the color based on stress level
 	$: sliderColor = getColorForLevel(stressLevel);
@@ -121,23 +121,6 @@
 		opacity: 0;
 		cursor: pointer;
 		z-index: 10;
-	}
-	
-	.vertical-slider::-webkit-slider-thumb {
-		-webkit-appearance: none;
-		appearance: none;
-		width: 30px;
-		height: 30px;
-		background: transparent;
-		cursor: pointer;
-	}
-	
-	.vertical-slider::-moz-range-thumb {
-		width: 30px;
-		height: 30px;
-		background: transparent;
-		cursor: pointer;
-		border: none;
 	}
 	
 	.slider-thumb {

@@ -18,11 +18,11 @@
 	});
 
 	function handleContinue() {
-		goto('/');
+		goto('/How_ya-Now');
 	}
 
     function gotomeditation(){
-        goto('/meditation')
+        goto('/Breathing_Methods_Selection');
     }
 
 </script>
