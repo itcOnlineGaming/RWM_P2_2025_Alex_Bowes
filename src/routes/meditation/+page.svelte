@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { base } from '$app/paths';
   import { goto } from '$app/navigation';
+  import { base } from '$app/paths';
   import Meditation from '$lib/MeditationComponent/Meditation.svelte';
   import { sceneStore } from '$lib/stores/sceneStore';
   import { onMount, onDestroy } from 'svelte';
@@ -11,17 +11,17 @@
   let backgroundImage = '';
   let fadeTransition = false;
   let audioElement: HTMLAudioElement | null = null;
-  let audioSource = '';
+  let audioSource = '';;
 
   onMount(() => {
     sceneStore.subscribe(value => {
       selectedScene = value;
       if (value === 'beach') {
-        backgroundImage = '/ASSETS/Beach-Scence (1).png';
-        audioSource = '/ASSETS/ocean-waves-250310.mp3';
+        backgroundImage = `${base}/ASSETS/Beach-Scence (1).png`;
+        audioSource = `${base}/ASSETS/ocean-waves-250310.mp3`;
       } else if (value === 'forest') {
-        backgroundImage = '/ASSETS/Forest-Scence (1).png';
-        audioSource = '/ASSETS/wind-in-the-trees-24035.mp3';
+        backgroundImage = `${base}/ASSETS/Forest-Scence (1).png`;
+        audioSource = `${base}/ASSETS/wind-in-the-trees-24035.mp3`;
       }
     });
   });
@@ -49,7 +49,7 @@
       audioElement.currentTime = 0;
     }
     // Navigate to ending page
-    goto('/Ending_of_Meditation');
+    goto(`${base}/Ending_of_Meditation`);
   }
 
   function skipMeditation() {
@@ -60,21 +60,21 @@
       audioElement.currentTime = 0;
     }
     // Navigate to ending page
-    goto('/Ending_of_Meditation');
+    goto(`${base}/Ending_of_Meditation`);
   }
 
   function handleFadeTransition() {
     fadeTransition = true;
     // Change to version without sun
     if (selectedScene === 'beach') {
-      backgroundImage = '/ASSETS/Beach-Scence-Sun-Set.png';
+      backgroundImage = `${base}/ASSETS/Beach-Scence-Sun-Set.png`;
     } else if (selectedScene === 'forest') {
-      backgroundImage = '/ASSETS/Forest-Scence-Sun-Set.png';
+      backgroundImage = `${base}/ASSETS/Forest-Scence-Sun-Set.png`;
     }
   }
 </script>
 
-<audio bind:this={audioElement} src={audioSource} loop preload="auto" />
+<audio bind:this={audioElement} src={audioSource} loop preload="auto"></audio>
 
 <div class="container" style="background-image: url('{backgroundImage}');" class:fade={fadeTransition}>
   {#if !started}

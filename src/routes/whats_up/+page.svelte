@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import WhatsUpSlider from '$lib/whats_up/whats_up.svelte';
 
 	function handleContinue() {
-		goto('/Choose_scene');
+		goto(`${base}/Choose_scene`);
 	}
 </script>
 

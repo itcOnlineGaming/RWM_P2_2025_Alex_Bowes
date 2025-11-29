@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import BreathingMethods from '$lib/Breathing_Methods_Selection/Breathing_methods.svelte';
 	import { sceneStore } from '$lib/stores/sceneStore';
 	import { onMount } from 'svelte';
@@ -11,19 +12,19 @@
 		sceneStore.subscribe(value => {
 			selectedScene = value;
 			if (value === 'beach') {
-				backgroundImage = '/ASSETS/Beach-Scence (1).png';
+				backgroundImage = `${base}/ASSETS/Beach-Scence (1).png`;
 			} else if (value === 'forest') {
-				backgroundImage = '/ASSETS/Forest-Scence (1).png';
+				backgroundImage = `${base}/ASSETS/Forest-Scence (1).png`;
 			}
 		});
 	});
 	
 	function goBack() {
-		goto('/Choose_scene');
+		goto(`${base}/Choose_scene`);
 	}
 	
 	function handleStart() {
-		goto('/meditation');
+		goto(`${base}/meditation`);
 	}
 </script>
 

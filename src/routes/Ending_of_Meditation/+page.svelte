@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import { sceneStore } from '$lib/stores/sceneStore';
 	import { onMount } from 'svelte';
 
@@ -10,19 +11,19 @@
 		sceneStore.subscribe(value => {
 			selectedScene = value;
 			if (value === 'beach') {
-				backgroundImage = '/ASSETS/Beach-Scence-Sun-Set.png';
+				backgroundImage = `${base}/ASSETS/Beach-Scence-Sun-Set.png`;
 			} else if (value === 'forest') {
-				backgroundImage = '/ASSETS/Forest-Scence-Sun-Set.png';
+				backgroundImage = `${base}/ASSETS/Forest-Scence-Sun-Set.png`;
 			}
 		});
 	});
 
 	function handleContinue() {
-		goto('/How_ya-Now');
+		goto(`${base}/How_ya-Now`);
 	}
 
     function gotomeditation(){
-        goto('/Breathing_Methods_Selection');
+        goto(`${base}/Breathing_Methods_Selection`);
     }
 
 </script>
@@ -34,7 +35,7 @@
 		<p class="message">We hope you feel more centered and calm.</p>
 		
 		<button class="continue-button" on:click={handleContinue}>
-			Return to Home
+			Continue
 		</button>
 
         <button class="Redo-button" on:click={gotomeditation}>

@@ -1,16 +1,25 @@
-<script lang="ts">
-	import { base } from '$app/paths';
-	import { finalStressLevel } from '$lib/stores/stressLevelStore';
-
-	let stressLevel = 50; // 0-100, where 0 is "I can't complain" and 100 is "I'm Fricked up"
+<script>
+	// Props with defaults
+	export let value = 50; // 0-100 stress level
+	export let labels = [
+		"I can't complain",
+		"Not too bad",
+		"Could be worse",
+		"I'm getting there",
+		"I'm Fed up",
+		"I'm Fricked up"
+	];
+	export let colors = {
+		low: '#00ff00',    // Green
+		medium: '#ffff00', // Yellow
+		high: '#ff0000'    // Red
+	};
+	export let silhouetteUrl = null; // Optional custom silhouette image
 	
-
-	$: finalStressLevel.set(stressLevel);
+	// Calculate color based on stress level
+	$: sliderColor = getColorForLevel(value);
 	
-	$: sliderColor = getColorForLevel(stressLevel);
-	
-	function getColorForLevel(level: number): string {
-		// Red at top (100), yellow in middle (50), green at bottom (0)
+	function getColorForLevel(level) {
 		if (level > 50) {
 			// Interpolate between yellow and red
 			const ratio = (level - 50) / 50;
@@ -22,20 +31,24 @@
 		}
 	}
 	
-	function getStressLabel(level: number): string {
-		if (level >= 90) return "I'm Fricked up";
-		if (level >= 70) return "I'm Fed up";
-		if (level >= 50) return "I'm getting there";
-		if (level >= 30) return "Could be worse";
-		if (level >= 15) return "Not too bad";
-		return "I can't complain";
+	function getStressLabel(level) {
+		if (level >= 90) return labels[5] || "Very High";
+		if (level >= 70) return labels[4] || "High";
+		if (level >= 50) return labels[3] || "Medium-High";
+		if (level >= 30) return labels[2] || "Medium";
+		if (level >= 15) return labels[1] || "Low";
+		return labels[0] || "Very Low";
 	}
 </script>
 
 <div class="slider-container">
 	<div class="silhouette-wrapper">
-		<img src="{base}/ASSETS/Siloet_of_Person.png" alt="Person silhouette" class="silhouette" />
-		<div class="color-overlay" style="height: {stressLevel}%; background: {sliderColor};"></div>
+		{#if silhouetteUrl}
+			<img src={silhouetteUrl} alt="Stress indicator" class="silhouette" />
+		{:else}
+			<div class="default-silhouette"></div>
+		{/if}
+		<div class="color-overlay" style="height: {value}%; background: {sliderColor};"></div>
 	</div>
 	
 	<div class="slider-track">
@@ -43,23 +56,23 @@
 			type="range"
 			min="0"
 			max="100"
-			bind:value={stressLevel}
+			bind:value
 			orient="vertical"
 			class="vertical-slider"
 		/>
-		<div class="slider-thumb" style="bottom: {stressLevel}%;"></div>
+		<div class="slider-thumb" style="bottom: {value}%;"></div>
 	</div>
 	
 	<div class="labels">
-		<div class="label">I'm Fricked up</div>
-		<div class="label">I'm Fed up</div>
-		<div class="label selected" style="top: {100 - stressLevel}%;">
-			{getStressLabel(stressLevel)}
+		<div class="label">{labels[5] || "Very High"}</div>
+		<div class="label">{labels[4] || "High"}</div>
+		<div class="label selected" style="top: {100 - value}%;">
+			{getStressLabel(value)}
 		</div>
-		<div class="label">I'm getting there</div>
-		<div class="label">Could be worse</div>
-		<div class="label">Not too bad</div>
-		<div class="label">I can't complain</div>
+		<div class="label">{labels[3] || "Medium-High"}</div>
+		<div class="label">{labels[2] || "Medium"}</div>
+		<div class="label">{labels[1] || "Low"}</div>
+		<div class="label">{labels[0] || "Very Low"}</div>
 	</div>
 </div>
 
@@ -80,8 +93,8 @@
 		border: 3px solid #333;
 		border-radius: 8px;
 		overflow: hidden;
-
 		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+		background: white;
 	}
 	
 	.silhouette {
@@ -91,6 +104,20 @@
 		position: relative;
 		z-index: 2;
 		mix-blend-mode: multiply;
+	}
+	
+	.default-silhouette {
+		width: 100%;
+		height: 100%;
+		position: relative;
+		z-index: 2;
+		background: linear-gradient(180deg, 
+			rgba(0,0,0,0.1) 0%,
+			rgba(0,0,0,0.3) 30%,
+			rgba(0,0,0,0.3) 70%,
+			rgba(0,0,0,0.1) 100%
+		);
+		clip-path: ellipse(40% 50% at 50% 50%);
 	}
 	
 	.color-overlay {
@@ -112,7 +139,7 @@
 	}
 	
 	.vertical-slider {
-		writing-mode: bt-lr; /* IE */
+		writing-mode: bt-lr;
 		-webkit-appearance: slider-vertical;
 		height: 500px;
 		width: 30px;
@@ -121,6 +148,23 @@
 		opacity: 0;
 		cursor: pointer;
 		z-index: 10;
+	}
+	
+	.vertical-slider::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		appearance: none;
+		width: 30px;
+		height: 30px;
+		background: transparent;
+		cursor: pointer;
+	}
+	
+	.vertical-slider::-moz-range-thumb {
+		width: 30px;
+		height: 30px;
+		background: transparent;
+		cursor: pointer;
+		border: none;
 	}
 	
 	.slider-thumb {
@@ -167,7 +211,6 @@
 		white-space: nowrap;
 	}
 	
-	/* Firefox */
 	input[type="range"][orient="vertical"] {
 		writing-mode: bt-lr;
 		-webkit-appearance: slider-vertical;

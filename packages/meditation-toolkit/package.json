@@ -1,0 +1,33 @@
+{
+  "name": "@alexbowes/meditation-toolkit",
+  "version": "0.1.0",
+  "description": "A comprehensive meditation toolkit with stress assessment, scene selection, breathing exercises, and guided meditation components",
+  "type": "module",
+  "svelte": "./src/index.js",
+  "exports": {
+    ".": {
+      "svelte": "./src/index.js"
+    },
+    "./StressSlider.svelte": "./src/StressSlider.svelte",
+    "./BreathingAnimation.svelte": "./src/BreathingAnimation.svelte",
+    "./SceneSelector.svelte": "./src/SceneSelector.svelte",
+    "./MeditationTimer.svelte": "./src/MeditationTimer.svelte"
+  },
+  "files": [
+    "src"
+  ],
+  "peerDependencies": {
+    "svelte": "^5.0.0"
+  },
+  "keywords": [
+    "svelte",
+    "meditation",
+    "wellness",
+    "stress-relief",
+    "breathing-exercises",
+    "srl",
+    "self-regulated-learning"
+  ],
+  "author": "Alex Bowes",
+  "license": "MIT"
+}

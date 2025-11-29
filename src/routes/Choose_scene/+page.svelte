@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import { sceneStore } from '$lib/stores/sceneStore';
 
 	let selectedScene: 'beach' | 'forest' | null = null;
@@ -9,13 +10,13 @@
 	}
 
 	function goBack() {
-		goto('/whats_up');
+		goto(`${base}/whats_up`);
 	}
 
 	function handleContinue() {
 		if (selectedScene) {
 			sceneStore.set(selectedScene);
-			goto('/Breathing_Methods_Selection');
+			goto(`${base}/Breathing_Methods_Selection`);
 		}
 	}
 </script>
@@ -28,7 +29,7 @@
 	<div class="scene-options">
 		<div class="scene-card">
 			<div class="image-container">
-				<img src="/ASSETS/Beach-Scence-with-sun.png" alt="Beach scene with sunset" />
+				<img src="{base}/ASSETS/Beach-Scence-with-sun.png" alt="Beach scene with sunset" />
 			</div>
 			<div class="checkbox-container">
 				<button
@@ -46,7 +47,7 @@
 
 		<div class="scene-card">
 			<div class="image-container">
-				<img src="/ASSETS/Forest-Scence-with-sun.png" alt="Forest scene with moon" />
+				<img src="{base}/ASSETS/Forest-Scence-with-sun.png" alt="Forest scene with moon" />
 			</div>
 			<div class="checkbox-container">
 				<button

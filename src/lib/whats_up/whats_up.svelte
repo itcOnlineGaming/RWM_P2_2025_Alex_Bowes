@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import { initialStressLevel } from '$lib/stores/stressLevelStore';
 
 	let stressLevel = 50; // 0-100, where 0 is "I can't complain" and 100 is "I'm Fricked up"
@@ -34,7 +35,7 @@
 
 <div class="slider-container">
 	<div class="silhouette-wrapper">
-		<img src="/ASSETS/Siloet_of_Person.png" alt="Person silhouette" class="silhouette" />
+		<img src="{base}/ASSETS/Siloet_of_Person.png" alt="Person silhouette" class="silhouette" />
 		<div class="color-overlay" style="height: {stressLevel}%; background: {sliderColor};"></div>
 	</div>
 	

@@ -1,11 +1,18 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { initialStressLevel } from '$lib/stores/stressLevelStore';
+	import { base } from '$app/paths';
+	import { initialStressLevel, finalStressLevel } from '$lib/stores/stressLevelStore';
+	import { sceneStore } from '$lib/stores/sceneStore';
+	import { breathingMethodStore } from '$lib/stores/breathingMethodStore';
+	import { user } from '$lib/stores/authStore';
+	import { meditationService } from '$lib/services/meditationService';
 	import { onMount } from 'svelte';
 	import HowYaNowSlider from '$lib/How_ya-Now/How_ya-Now.svelte';
 
 	let previousStressLevel = 50;
 	let previousLabel = '';
+	let saving = false;
+	let saved = false;
 
 	onMount(() => {
 		initialStressLevel.subscribe(value => {
@@ -23,8 +30,31 @@
 		return "I can't complain";
 	}
 
-	function handleContinue() {
-		goto('/');
+	async function handleContinue() {
+		// Save meditation session to Firestore if user is logged in
+		if ($user && !saved) {
+			saving = true;
+			
+			const initialLevel = $initialStressLevel;
+			const finalLevel = $finalStressLevel;
+			const improvement = initialLevel - finalLevel;
+
+			await meditationService.saveMeditationSession({
+				userId: $user.uid,
+				scene: $sceneStore || 'beach',
+				breathingMethod: $breathingMethodStore,
+				initialStressLevel: initialLevel,
+				finalStressLevel: finalLevel,
+				stressImprovement: improvement,
+				duration: 120 // 2 minutes meditation
+			});
+
+			saved = true;
+			saving = false;
+		}
+
+
+		goto(base);
 	}
 </script>
 
@@ -39,7 +69,7 @@
 	</div>
 
 	<div class="footer">
-		<button class="continue-btn" on:click={handleContinue}>Finish</button>
+		<a href="{base}/" class="continue-btn">Finish</a>
 	</div>
 </div>
 
@@ -208,6 +238,7 @@
 	}
 
 	.continue-btn {
+		display: inline-block;
 		background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
 		color: white;
 		border: none;
@@ -216,6 +247,7 @@
 		font-weight: 600;
 		border-radius: 50px;
 		cursor: pointer;
+		text-decoration: none;
 		transition: transform 0.2s, box-shadow 0.2s;
 		box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
 	}
